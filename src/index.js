@@ -23,6 +23,8 @@ import CalendarTodayIcon from "@material-ui/icons/CalendarToday"
 import ListIcon from "@material-ui/icons/List"
 import AddIcon from "@material-ui/icons/Add"
 
+import {CLIENT_SECRET} from "../CLIENT_SECRET.js"
+
 const VERSION_NUMBER = "0.1.18b"
 console.log(VERSION_NUMBER)
 
@@ -287,7 +289,7 @@ const readRange = () => {
   return dataStore
 }
 
-const newIndentValidator = (data) => {
+const newIndentValidator = (data, authenticated) => {
   const fmt = str => str.slice(6,10)+"-"+str.slice(3,5)+"-"+str.slice(0,2)+"T"+str.slice(11,16)
   const sd = Math.min(new Date(fmt(data.startDateTime)))
   if (sd !== sd) {
@@ -301,8 +303,8 @@ const newIndentValidator = (data) => {
     return ["FAILED", "End date must be after start date"]
   }
   const timeDelta = Math.min(sd||Infinity, ed||Infinity)-(new Date())
-  if (timeDelta < 1296000000) {
-    return ["FAILED", "Request is not 14 calendar days in advance. Speak to 5SIR S3 Branch for ad-hoc request."]
+  if (timeDelta < 1296000000 && authenticated !== true) {
+    return ["AUTHENTICATE", "Request is not 14 calendar days in advance. Speak to 5SIR S3 Branch for ad-hoc request."]
   }
   for (const field in data) {
     if (fieldAttributes[field].optional !== true && (typeof data[field] !== "string" || data[field].trim() === "")) {
@@ -315,10 +317,10 @@ const newIndentValidator = (data) => {
   return ["SUCCESS"]
 }
 
-const submitForm = async (data, validator) => {
+const submitForm = async (data, validator, authenticated) => {
   if (typeof validator === "function") {
-    const validated = validator(data)
-    if (validated[0] === "FAILED") {
+    const validated = validator(data, authenticated)
+    if (validated[0] !== "SUCCESS") {
       return validated
     }
   }
@@ -365,7 +367,7 @@ const FormFactory = ({prefill, fields, defaults, formPersistentStore, validator}
     myPersistentStore.data = initializedFields
     setStates(initializedFields)
   }
-  const submit = async () => {
+  const submit = async (authenticated) => {
     var constitutedObject = {}
     for (const {name, initialData} of defaults) {
       constitutedObject[name] = initialData
@@ -374,13 +376,22 @@ const FormFactory = ({prefill, fields, defaults, formPersistentStore, validator}
       const normalizer = normalizers[fieldType]
       constitutedObject[fieldName] = normalizer ? normalizer(text) : text
     }
-    const [result, params] = await submitForm(constitutedObject, validator)
+    const [result, params] = await submitForm(constitutedObject, validator, authenticated)
     if (result === "SUCCESS") {
       alert("Indent submitted successfully!")
       initializeFields()
     }
     else if (result === "FAILED") {
       alert(params)
+    }
+    else if (result === "AUTHENTICATE") {
+      const password = prompt(params)
+      if (password === CLIENT_SECRET) {
+        submit(true)
+      }
+      else {
+        alert("Incorrect bypass code.")
+      }
     }
   }
   return (

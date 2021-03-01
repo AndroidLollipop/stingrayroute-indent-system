@@ -1,0 +1,25 @@
+body {
+  padding:0;
+  margin:0;
+}
+#statusbar {
+  background:#4154B3;
+  left:0;
+  top:0;
+  width:100%;
+  padding-top: env(safe-area-inset-top);
+  position:fixed;
+  z-index: 2;
+}
+#barspacer {
+  left:0;
+  top:0;
+  width:100%;
+  padding-top: env(safe-area-inset-top);
+}
+.expanded {
+  transform:scale(1);
+}
+.collapsed {
+  transform:scale(0);
+}

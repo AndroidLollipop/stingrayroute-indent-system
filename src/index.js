@@ -301,8 +301,8 @@ const newIndentValidator = (data) => {
     return ["FAILED", "End date must be after start date"]
   }
   const timeDelta = Math.min(sd||Infinity, ed||Infinity)-(new Date())
-  if (timeDelta < 2678400000) {
-    return ["FAILED", "This indent is too late. Please discuss this indent manually with the route POC."]
+  if (timeDelta < 1296000000) {
+    return ["FAILED", "Request is not 14 calendar days in advance. Speak to 5SIR S3 Branch for ad-hoc request."]
   }
   for (const field in data) {
     if (fieldAttributes[field].optional !== true && (typeof data[field] !== "string" || data[field].trim() === "")) {
@@ -485,10 +485,10 @@ const Appointment = (setSelTab) => ({data, children, ...restProps}) => {
   }
   else {
     const timeDelta = Math.min(Math.min(new Date(data.startDate))||Infinity, Math.min(new Date(data.endDate))||Infinity)-(new Date())
-    if (timeDelta < 2678400000) {
+    if (timeDelta < 1296000000) {
       backgroundColor = "red"
     }
-    else if (timeDelta < 3024000000) {
+    else if (timeDelta < 1555200000) {
       backgroundColor = "rgb(204, 204, 0)"
     }
   }
@@ -744,10 +744,10 @@ const transportItemGenerator = (data, index, setSelTab) => {
   }
   else {
     const timeDelta = Math.min(Math.min(new Date(fmt(data.startDateTime)))||Infinity, Math.min(new Date(fmt(data.endDateTime)))||Infinity)-(new Date())
-    if (timeDelta < 2678400000) {
+    if (timeDelta < 1296000000) {
       backgroundColor = "rgb(255, 230, 230)"
     }
-    else if (timeDelta < 3024000000) {
+    else if (timeDelta < 1555200000) {
       backgroundColor = "rgb(255, 255, 204)"
     }
   }

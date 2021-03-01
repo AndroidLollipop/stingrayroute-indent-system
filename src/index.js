@@ -70,8 +70,8 @@ const App = () => {
       notificationsStore = [...notifications].reverse()
       notifyNewN()
     })
-    socket.on("alert", (alert) => {
-      alert(alert)
+    socket.on("alert", (message) => {
+      alert(message)
     })
     socket.emit("requestIndents", "")
     socket.emit("requestNotifications", "")

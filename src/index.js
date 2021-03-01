@@ -221,6 +221,7 @@ const DetailGenerator = ({setSelTab, details, heightProvider}) => {
 }
 
 const editData = async (index, newData) => {
+  const packet = {data: newData, pin: RECOMMEND_PIN}
   const refresh = await writeDataStore(index, newData)
   if (refresh) {
     notifyNewData()
@@ -310,7 +311,6 @@ const submitForm = async (data, validator) => {
       return validated
     }
   }
-  data = {data, pin: RECOMMEND_PIN}
   const refresh = await appendDataStore(data)
   if (refresh) {
     notifyNewData()

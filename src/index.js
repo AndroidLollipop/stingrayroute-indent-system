@@ -23,7 +23,7 @@ import CalendarTodayIcon from "@material-ui/icons/CalendarToday"
 import ListIcon from "@material-ui/icons/List"
 import AddIcon from "@material-ui/icons/Add"
 
-import {CLIENT_SECRET} from "../CLIENT_SECRET.js"
+import {CLIENT_SECRET} from "./CLIENT_SECRET.js"
 
 const VERSION_NUMBER = "0.1.18b"
 console.log(VERSION_NUMBER)

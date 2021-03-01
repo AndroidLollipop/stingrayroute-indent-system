@@ -737,6 +737,7 @@ const transportItemGenerator = (data, index, setSelTab) => {
       addDetailTab(data, index)
       setSelTab(Infinity)
     }}>
+      <Material.TableCell>{data.system ?? "Stingray 2.4km route"}</Material.TableCell>
       <Material.TableCell>{data.name}</Material.TableCell>
       <Material.TableCell>{data.startDateTime}</Material.TableCell>
       <Material.TableCell>{data.endDateTime}</Material.TableCell>
@@ -753,6 +754,7 @@ const transportItemGenerator = (data, index, setSelTab) => {
 const detailItemGenerator = (data, index) => {
   return (
     <Material.TableRow key={data.internalUID}>
+      <Material.TableCell>{data.system ?? "Stingray 2.4km route"}</Material.TableCell>
       <Material.TableCell>{data.name}</Material.TableCell>
       <Material.TableCell>{data.startDateTime}</Material.TableCell>
       <Material.TableCell>{data.endDateTime}</Material.TableCell>
@@ -842,7 +844,7 @@ var notificationsStore = []
 
 const statuses = ["Pending", "Submitted", "Recommended", "Hidden"]
 
-const formFields = [{name: "emailsNotify", initialData: [], friendlyName: "Email", fieldType: "multi", persistent: true, optional: true}, {name: "name", initialData: "", friendlyName: "Purpose"}, {name: "startDateTime", initialData: "", friendlyName: "Start time", fieldType: "datetime"}, {name: "endDateTime", initialData: "", friendlyName: "End time", fieldType: "datetime"}, {name: "unit", initialData: "", friendlyName: "Unit"}, {name: "company", initialData: "", friendlyName: "Company"}, {name: "POC", initialData: "", friendlyName: "Contact person"}, {name: "POCPhone", initialData: "", friendlyName: "Contact person number"}, {name: "notes", initialData: "", friendlyName: "Notes", optional: true}]
+const formFields = [{name: "emailsNotify", initialData: [], friendlyName: "Email", fieldType: "multi", persistent: true, optional: true}, {name: "system", initialData: "Stingray 2.4km route", friendlyName: "Resource", fieldType: "select", options: ["Stingray 2.4km route"]}, {name: "name", initialData: "", friendlyName: "Purpose"}, {name: "startDateTime", initialData: "", friendlyName: "Start time", fieldType: "datetime"}, {name: "endDateTime", initialData: "", friendlyName: "End time", fieldType: "datetime"}, {name: "unit", initialData: "", friendlyName: "Unit"}, {name: "company", initialData: "", friendlyName: "Company"}, {name: "POC", initialData: "", friendlyName: "Contact person"}, {name: "POCPhone", initialData: "", friendlyName: "Contact person number"}, {name: "notes", initialData: "", friendlyName: "Notes", optional: true}]
 
 const dataDefaults = [{name: "status", initialData: "Pending", friendlyName: "Status"}]
 

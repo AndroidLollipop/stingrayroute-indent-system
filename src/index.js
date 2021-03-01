@@ -76,6 +76,9 @@ const App = () => {
     })
     socket.on("requestauth", (message) => {
       RECOMMEND_PIN = prompt(message)
+      if (RECOMMEND_PIN === null) {
+        return
+      }
       if (PREVIOUS_EDIT_PARAMS !== null) {
         const saved = PREVIOUS_EDIT_PARAMS
         PREVIOUS_EDIT_PARAMS = null

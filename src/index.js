@@ -76,6 +76,11 @@ const App = () => {
     })
     socket.on("requestauth", (message) => {
       RECOMMEND_PIN = prompt(message)
+      if (PREVIOUS_EDIT_PARAMS !== null) {
+        const saved = PREVIOUS_EDIT_PARAMS
+        PREVIOUS_EDIT_PARAMS = null
+        editData(saved.index, saved.newData)
+      }
     })
     socket.emit("requestIndents", "")
     socket.emit("requestNotifications", "")
@@ -220,7 +225,10 @@ const DetailGenerator = ({setSelTab, details, heightProvider}) => {
   )
 }
 
+var PREVIOUS_EDIT_PARAMS = null
+
 const editData = async (index, newData) => {
+  PREVIOUS_EDIT_PARAMS = {index, newData}
   const packet = {data: newData, pin: RECOMMEND_PIN}
   const refresh = await writeDataStore(index, newData)
   if (refresh) {

@@ -23,12 +23,12 @@ import CalendarTodayIcon from "@material-ui/icons/CalendarToday"
 import ListIcon from "@material-ui/icons/List"
 import AddIcon from "@material-ui/icons/Add"
 
-const VERSION_NUMBER = "0.1.18a"
+const VERSION_NUMBER = "0.1.18b"
 console.log(VERSION_NUMBER)
 
 const ranker = require("./searchRanker.js")
 
-var serverURL = "https://murmuring-ocean-38436.herokuapp.com/"
+var serverURL = "https://ancient-refuge-34590.herokuapp.com/"
 
 var setTabs
 var additionalTabs = []
@@ -743,12 +743,10 @@ const transportItemGenerator = (data, index, setSelTab) => {
       <Material.TableCell>{data.name}</Material.TableCell>
       <Material.TableCell>{data.startDateTime}</Material.TableCell>
       <Material.TableCell>{data.endDateTime}</Material.TableCell>
-      <Material.TableCell>{data.origin}</Material.TableCell>
-      <Material.TableCell>{data.destination}</Material.TableCell>
+      <Material.TableCell>{data.unit}</Material.TableCell>
+      <Material.TableCell>{data.company}</Material.TableCell>
       <Material.TableCell>{data.POC}</Material.TableCell>
       <Material.TableCell>{data.POCPhone}</Material.TableCell>
-      <Material.TableCell>{system}</Material.TableCell>
-      <Material.TableCell>{data.vehicles}</Material.TableCell>
       <Material.TableCell>{data.notes}</Material.TableCell>
       <Material.TableCell>{data.status}</Material.TableCell>
     </Material.TableRow>
@@ -761,12 +759,10 @@ const detailItemGenerator = (data, index) => {
       <Material.TableCell>{data.name}</Material.TableCell>
       <Material.TableCell>{data.startDateTime}</Material.TableCell>
       <Material.TableCell>{data.endDateTime}</Material.TableCell>
-      <Material.TableCell>{data.origin}</Material.TableCell>
-      <Material.TableCell>{data.destination}</Material.TableCell>
+      <Material.TableCell>{data.unit}</Material.TableCell>
+      <Material.TableCell>{data.company}</Material.TableCell>
       <Material.TableCell>{data.POC}</Material.TableCell>
       <Material.TableCell>{data.POCPhone}</Material.TableCell>
-      <Material.TableCell>{data.system === "Civilian" ? "Civilian" : "Military"}</Material.TableCell>
-      <Material.TableCell>{data.vehicles}</Material.TableCell>
       <Material.TableCell>{data.notes}</Material.TableCell>
     </Material.TableRow>
   )
@@ -853,9 +849,9 @@ const formFields = [{name: "emailsNotify", initialData: [], friendlyName: "Email
 
 const dataDefaults = [{name: "status", initialData: "Pending", friendlyName: "Status"}]
 
-const detailFields = [...formFields.slice(2, -2), formFields[1], ...formFields.slice(-2)]
+const detailFields = [...formFields.slice(1)]
 
-const displayFields = [...formFields.slice(2, -2), formFields[1], ...formFields.slice(-2), ...dataDefaults]
+const displayFields = [...formFields.slice(1), ...dataDefaults]
 
 const fieldToFriendly = {}
 

@@ -269,7 +269,6 @@ const readRange = () => {
 }
 
 const newIndentValidator = (data) => {
-  const system = data.system
   const fmt = str => str.slice(6,10)+"-"+str.slice(3,5)+"-"+str.slice(0,2)+"T"+str.slice(11,16)
   const sd = Math.min(new Date(fmt(data.startDateTime)))
   if (sd !== sd) {
@@ -283,8 +282,8 @@ const newIndentValidator = (data) => {
     return ["FAILED", "End date must be after start date"]
   }
   const timeDelta = Math.min(sd||Infinity, ed||Infinity)-(new Date())
-  if ((system !== "Civilian" && timeDelta < 1468800000) || timeDelta < 864000000) {
-    return ["FAILED", "This indent is too late. Please discuss this indent manually with the transport clerk."]
+  if (timeDelta < 2678400000) {
+    return ["FAILED", "This indent is too late. Please discuss this indent manually with the route POC."]
   }
   for (const field in data) {
     if (fieldAttributes[field].optional !== true && (typeof data[field] !== "string" || data[field].trim() === "")) {
@@ -461,17 +460,16 @@ const DEBOUNCE_PERIOD = 100
 const transportPersistentStore = {}
 
 const Appointment = (setSelTab) => ({data, children, ...restProps}) => {
-  const system = data.system
   var backgroundColor = "gray"
   if (data.status === "Recommended") {
     backgroundColor = "green"
   }
   else {
     const timeDelta = Math.min(Math.min(new Date(data.startDate))||Infinity, Math.min(new Date(data.endDate))||Infinity)-(new Date())
-    if ((system !== "Civilian" && timeDelta < 1468800000) || timeDelta < 864000000) {
+    if (timeDelta < 2678400000) {
       backgroundColor = "red"
     }
-    else if ((system !== "Civilian" && timeDelta < 1814400000) || timeDelta < 1209600000) {
+    else if (timeDelta < 3024000000) {
       backgroundColor = "rgb(204, 204, 0)"
     }
   }
@@ -720,7 +718,6 @@ const TransportViewStyle = {
 }
 
 const transportItemGenerator = (data, index, setSelTab) => {
-  const system = data.system === "Civilian" ? "Civilian" : "Military"
   const fmt = str => str.slice(6,10)+"-"+str.slice(3,5)+"-"+str.slice(0,2)+"T"+str.slice(11,16)
   var backgroundColor = "white"
   if (data.status === "Recommended") {
@@ -728,10 +725,10 @@ const transportItemGenerator = (data, index, setSelTab) => {
   }
   else {
     const timeDelta = Math.min(Math.min(new Date(fmt(data.startDateTime)))||Infinity, Math.min(new Date(fmt(data.endDateTime)))||Infinity)-(new Date())
-    if ((system !== "Civilian" && timeDelta < 1468800000) || timeDelta < 864000000) {
+    if (timeDelta < 2678400000) {
       backgroundColor = "rgb(255, 230, 230)"
     }
-    else if ((system !== "Civilian" && timeDelta < 1814400000) || timeDelta < 1209600000) {
+    else if (timeDelta < 3024000000) {
       backgroundColor = "rgb(255, 255, 204)"
     }
   }

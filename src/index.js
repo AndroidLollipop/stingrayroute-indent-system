@@ -46,6 +46,7 @@ const removeTab = (id) => {
 }
 
 var socket
+var RECOMMEND_PIN = ""
 
 const App = () => {
   
@@ -72,6 +73,9 @@ const App = () => {
     })
     socket.on("alert", (message) => {
       alert(message)
+    })
+    socket.on("requestauth", (message) => {
+      RECOMMEND_PIN = prompt(message)
     })
     socket.emit("requestIndents", "")
     socket.emit("requestNotifications", "")
@@ -306,6 +310,7 @@ const submitForm = async (data, validator) => {
       return validated
     }
   }
+  data = {data, pin: RECOMMEND_PIN}
   const refresh = await appendDataStore(data)
   if (refresh) {
     notifyNewData()

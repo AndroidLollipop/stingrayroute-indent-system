@@ -23,7 +23,7 @@ import CalendarTodayIcon from "@material-ui/icons/CalendarToday"
 import ListIcon from "@material-ui/icons/List"
 import AddIcon from "@material-ui/icons/Add"
 
-import {CLIENT_SECRET} from "./CLIENT_SECRET.js"
+import ClientSecret from "./CLIENT_SECRET.js"
 
 const VERSION_NUMBER = "0.1.18b"
 console.log(VERSION_NUMBER)
@@ -386,7 +386,10 @@ const FormFactory = ({prefill, fields, defaults, formPersistentStore, validator}
     }
     else if (result === "AUTHENTICATE") {
       const password = prompt(params)
-      if (password === CLIENT_SECRET) {
+      if (password === null) {
+        return
+      }
+      else if (password === ClientSecret) {
         submit(true)
       }
       else {

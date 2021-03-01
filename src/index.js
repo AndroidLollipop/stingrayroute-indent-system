@@ -230,7 +230,7 @@ var PREVIOUS_EDIT_PARAMS = null
 const editData = async (index, newData) => {
   PREVIOUS_EDIT_PARAMS = {index, newData}
   const packet = {data: newData, pin: RECOMMEND_PIN}
-  const refresh = await writeDataStore(index, newData)
+  const refresh = await writeDataStore(index, packet)
   if (refresh) {
     notifyNewData()
   }

@@ -386,7 +386,7 @@ const FormFactory = ({prefill, fields, defaults, formPersistentStore, validator}
     }
     else if (result === "AUTHENTICATE") {
       const password = prompt(params)
-      if (password === null) {
+      if (password === null || password === "") {
         return
       }
       else if (password === ClientSecret) {

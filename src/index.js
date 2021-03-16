@@ -25,7 +25,7 @@ import AddIcon from "@material-ui/icons/Add"
 
 import ClientSecret from "./CLIENT_SECRET.js"
 
-const VERSION_NUMBER = "0.1.19b"
+const VERSION_NUMBER = "0.1.20b"
 console.log(VERSION_NUMBER)
 
 const ranker = require("./searchRanker.js")
@@ -49,6 +49,22 @@ const removeTab = (id) => {
 
 var socket
 var RECOMMEND_PIN = ""
+
+const ScrollWrapper = ({childContext, mykey, children}) => {
+  const currKey = React.useRef(mykey)
+  if (currKey.current !== mykey && currKey.current !== null) {
+    childContext.current[currKey.current] = window.scrollY
+    currKey.current = null
+  }
+  React.useLayoutEffect(() => {
+    currKey.current = mykey
+    if (childContext.current[mykey] === undefined) {
+      childContext.current[mykey] = 0
+    }
+    window.scrollTo(window.scrollX, childContext.current[mykey])
+  }, [mykey, currKey])
+  return children
+}
 
 const App = () => {
   
@@ -108,10 +124,11 @@ const App = () => {
   }, [appbarRef])
 
   const newIndentPersistentStore = React.useRef({})
+  const childScrollContext = React.useRef({})
 
   return (
     <div>
-      <Tabs selTab={selTab} setSelTab={setSelTab} appbarRef={appbarRef}>
+      <Tabs childWrapper={ScrollWrapper} childContext={childScrollContext} selTab={selTab} setSelTab={setSelTab} appbarRef={appbarRef}>
         {[(<div label="view indents" key="defaultTab1" mykey="defaultTab1">
           <TransportView setSelTab={setSelTab} heightProvider={[currentHeight, heightListeners]} />
         </div>),
@@ -922,12 +939,13 @@ for (const description of [...formFields, ...dataDefaults]) {
   fieldAttributes[description.name] = {persistent: description.persistent, optional: description.optional}
 }
 
-const Tabs = ({children, selTab, setSelTab, appbarRef}) => {
+const Tabs = ({childWrapper, childContext, children, selTab, setSelTab, appbarRef}) => {
   const pre = [(<Material.Tab style={{opacity: 1, minWidth: 0, minHeight:0, padding: 0}} disableRipple selected label={<div style={{height: "48px", width: "48px"}}><img src={appLogo} height="48px" width="48px"/></div>}/>)]
   const post = [(<Material.Tab style={{opacity: 1, minWidth: 0, minHeight:0, padding: 0}} disableRipple selected label={<Material.IconButton onClick={() => {
     addNewTab()
     setSelTab(Infinity)
   }} size="small" className="MuiTab-textColorInherit"><AddIcon style={{color: "white"}}/></Material.IconButton>}/>)]
+  const ChildWrapper = childWrapper
   return (
     <div>
       <Material.AppBar position="sticky" style={{top: "env(safe-area-inset-top)"}} ref={appbarRef}>
@@ -939,7 +957,9 @@ const Tabs = ({children, selTab, setSelTab, appbarRef}) => {
         </Material.Tabs>
       </Material.AppBar>
       <div>
-        {children[Math.min(selTab, children.length-1)]}
+        <ChildWrapper childContext={childContext} mykey={children[Math.min(selTab, children.length-1)].props.mykey}>
+          {children[Math.min(selTab, children.length-1)]}
+        </ChildWrapper>
       </div>
     </div>
   )

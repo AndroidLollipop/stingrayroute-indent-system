@@ -121,7 +121,7 @@ const App = () => {
         listener(appbarRef.current.offsetHeight)
       }
     }
-  }, [appbarRef])
+  }, [appbarRef, appbarRef?.current?.offsetHeight])
 
   const newIndentPersistentStore = React.useRef({})
   const childScrollContext = React.useRef({})

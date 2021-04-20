@@ -739,12 +739,14 @@ const AnimatedIcon = ({icon}) => {
   return (<Material.Icon ref={iconRef} style={{transition: TRANSITION_STRING}}>{displayedIcon === "list" ? (<CalendarTodayIcon/>) : (<ListIcon/>)}</Material.Icon>)
 }
 
+const barSpacer = document.getElementById("barspacer")
+
 const MyStickyHeader = ({children, heightProvider: [currentHeight, heightListeners]}) => {
   const headRef = React.useRef(null)
   React.useEffect(() => {
     const myListeners = heightListeners.current
     var height = currentHeight.current
-    const capturedTop = headRef.current.getBoundingClientRect().top+window.scrollY
+    const capturedTop = headRef.current.getBoundingClientRect().top-barSpacer.getBoundingClientRect().bottom
     const recomputeTop = () => {
       const targetPosition = Math.max(window.scrollY+height-capturedTop, 0)
       setTop(targetPosition)
